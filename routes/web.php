@@ -27,8 +27,8 @@ require __DIR__.'/auth.php';
 Route::middleware(['tenancy.init', 'tenancy.prevent', 'spatie.team'])
     ->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->name('dashboard');
+        // Route::get('/dashboard', [DashboardController::class, 'index'])
+        // ->name('dashboard');
 
         Route::resource('schools', SchoolsController::class)->except(['show']);
         Route::resource('branches', BranchesController::class)->except(['show']);
