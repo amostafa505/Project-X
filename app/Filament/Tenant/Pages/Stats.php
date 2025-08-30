@@ -3,12 +3,17 @@
 namespace App\Filament\Tenant\Pages;
 
 use Filament\Pages\Page;
-use Filament\Support\Icons\Heroicon;
 
 class Stats extends Page
 {
+    // أيقونة كسترينج عشان المضمون
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
-    protected ?string $view = 'filament.tenant.pages.stats';
+    // v4: string غير قابل لـ null + غير static
+    protected string $view = 'filament.tenant.pages.stats';
 
+    // اختياري
     protected ?string $heading = 'Dashboard';
+    protected static ?string $navigationLabel = 'Dashboard';
+    protected static ?string $title = 'Dashboard';
 }
