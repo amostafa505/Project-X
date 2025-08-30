@@ -16,4 +16,8 @@ class Branch extends Model
     {
         return $this->belongsTo(School::class);
     }
+    public function subjects()
+    {
+        return $this->hasMany(\App\Models\Subject::class);
+    }
 }
