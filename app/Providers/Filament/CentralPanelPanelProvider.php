@@ -1,25 +1,12 @@
 <?php
-
 namespace App\Providers\Filament;
 
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\AuthenticateSession;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
+// المهم: استخدم ميدلوير فيلمنت مش 'auth'
 use Filament\Http\Middleware\Authenticate as FilamentAuthenticate;
-
+// صفحة الداشبورد الجاهزة من فيلمنت
+use Filament\Pages\Dashboard;
 
 class CentralPanelPanelProvider extends PanelProvider
 {
@@ -28,11 +15,21 @@ class CentralPanelPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('central')
-            ->path('admin')                 // لوحة السنترال على /admin
+            ->path('admin')
             ->brandName('Project-X (Central)')
-            ->login()                       // يفعّل صفحة /admin/login
-            ->middleware(['web'])           // مفيش تنانسي هنا
-            ->authMiddleware([FilamentAuthenticate::class]) // بدل 'auth'
-            ->authGuard('web'); // (اختياري) لو عايز تحدّد الجارد صراحةً
+            ->login()
+            ->middleware(['web'])                 // مفيش تنانسي هنا
+            ->authMiddleware([FilamentAuthenticate::class])
+            ->authGuard('web')                    // اختياري لكن مريح
+
+            // خلي البانل يكتشف أي Resources/Pages للسنترال (لو هنعملها لاحقًا)
+            ->discoverResources(in: app_path('Filament/Central/Resources'), for: 'App\\Filament\\Central\\Resources')
+            ->discoverPages(in: app_path('Filament/Central/Pages'), for: 'App\\Filament\\Central\\Pages')
+
+            // فعّل صفحة الداشبورد الجاهزة
+            ->pages([ Dashboard::class ])
+
+            // واجه الهوم لصفحة حقيقية علشان ما يحصلش redirect loop
+            ->homeUrl(fn () => Dashboard::getUrl());
     }
 }
