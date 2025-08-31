@@ -20,7 +20,14 @@ class TenantPanelProvider extends PanelProvider
         ->login()
         ->middleware(['web','tenancy.init','tenancy.prevent','spatie.team'])
         ->authMiddleware([FilamentAuthenticate::class])
-        ->discoverPages(in: app_path('Filament/Tenant/Pages'), for: 'App\\Filament\\Tenant\\Pages')
+        ->discoverPages(
+            in: app_path('Filament/Tenant/Pages'),
+            for: 'App\\Filament\\Tenant\\Pages',
+        )
+        ->discoverResources(
+            in: app_path('Filament/Tenant/Resources'),
+            for: 'App\\Filament\\Tenant\\Resources',
+        )
         ->homeUrl(fn () => Stats::getUrl());
     }
 }

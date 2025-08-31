@@ -6,53 +6,33 @@ use App\Filament\Concerns\TenantScopedResource; // لو single-DB
 use App\Filament\Tenant\Resources\BranchResource\Pages;
 use App\Models\Branch;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Schemas\Schema;
 
 class BranchResource extends Resource
 {
     use TenantScopedResource; // علّقها لو multi-DB per tenant
 
     protected static ?string $model = Branch::class;
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationGroup = 'Directory';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-building-office';
+    protected static \UnitEnum|string|null $navigationGroup = 'Organization';
     protected static ?string $modelLabel = 'Branch';
     protected static ?string $pluralModelLabel = 'Branches';
 
-    public static function form(Form $form): Form
-    {
-        return $form
+    public static function form(Schema $schema): Schema
+{
+    return $schema->components([
+        Forms\Components\Section::make('Basic Info')
             ->schema([
-                Forms\Components\Section::make('Basic Info')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label('Name')
-                            ->required()
-                            ->maxLength(150),
-
-                        Forms\Components\TextInput::make('code')
-                            ->label('Code')
-                            ->required()
-                            ->maxLength(50)
-                            ->unique(ignoreRecord: true),
-
-                        Forms\Components\Select::make('school_id')
-                            ->label('School')
-                            ->relationship('school', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-                    ])->columns(2)->maxWidth(MaxWidth::Medium),
-
-                // لو single-DB اربط tenant_id تلقائيًا
-                Forms\Components\Hidden::make('tenant_id')
-                    ->default(fn () => function_exists('tenant') ? tenant('id') : null),
-            ])
-            ->columns(1);
-    }
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('code')->maxLength(50),
+                Forms\Components\TextInput::make('phone')->tel(),
+            ])->columns(2),
+    ]);
+}
 
     public static function table(Table $table): Table
     {
