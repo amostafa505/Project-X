@@ -19,6 +19,9 @@ class SubjectResource extends Resource
     protected static ?string $model = Subject::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    // مهم: مطابق لتوقيع الأب في v4
+    protected static \UnitEnum|string|null  $navigationGroup = 'Organization';
+    protected static ?int $navigationSort = 15; // رقم لترتيب الظهور داخل المجموعة (اختياري)
 
     protected static ?string $recordTitleAttribute = 'name';
 

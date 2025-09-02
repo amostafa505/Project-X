@@ -39,3 +39,5 @@ Route::middleware(['tenancy.init', 'tenancy.prevent', 'spatie.team'])
         // example tenant-only ping
         Route::get('/ping', fn () => 'pong (tenant='.tenant()->id.')');
     });
+    Route::get('/whoami', fn () => response()->json(['tenant' => tenant()?->id]))
+    ->middleware(['web', \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class]);
