@@ -9,9 +9,11 @@ class SetSpatieTeamFromTenant
 {
     public function handle($request, Closure $next)
     {
-        if (function_exists('tenant') && tenant()) {
-            app(PermissionRegistrar::class)->setPermissionsTeamId(tenant()->id);
+        if ($tenant = tenant()) {
+            app(\Spatie\Permission\PermissionRegistrar::class)
+                ->setPermissionsTeamId($tenant->id);
         }
+
         return $next($request);
     }
 }

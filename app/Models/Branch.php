@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use App\Models\Concerns\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
@@ -17,6 +16,10 @@ class Branch extends Model
     public function school()
     {
         return $this->belongsTo(\App\Models\School::class , 'school_id');
+    }
+    public function classrooms()
+    {
+        return $this->hasMany(\App\Models\Classroom::class, 'branch_id');
     }
     public function subjects()
     {

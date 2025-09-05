@@ -12,9 +12,25 @@ class Student extends Model
     use BelongsToTenant , HasFactory;
 
     protected $fillable = [
-        'tenant_id','branch_id','first_name','last_name','email','phone','status','guardian_id'
+        'tenant_id','branch_id','school_id','first_name','last_name','status','guardian_id' , 'code' , 'dob', 'gender'
     ];
 
-    public function branch()   { return $this->belongsTo(Branch::class); }
-    public function guardian() { return $this->belongsTo(Guardian::class); }
+    protected $casts = [
+        'dob' => 'date',            // مهم علشان DatePicker
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    public function branch()
+       {
+        return $this->belongsTo(Branch::class, 'branch_id');
+       }
+    public function guardian()
+    {
+        return $this->belongsTo(Guardian::class , 'guardian_id');
+    }
+    public function school()
+    {
+        return $this->belongsTo(School::class, 'school_id');
+    }
 }

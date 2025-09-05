@@ -19,8 +19,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
-use Illuminate\Database\Eloquent\Builder;
-use Stancl\Tenancy\Database\Models\Domain;
+use App\Support\Tenancy;
+
 
 class BranchResource extends Resource
 {
@@ -38,9 +38,7 @@ class BranchResource extends Resource
     // v4: Schema بدلاً من Forms\Form
     public static function form(Schema $schema): Schema
     {
-       // التقط tenant_id مرة واحدة بثبات
-    $tenantId = tenant()?->getKey()
-    ?? Domain::query()->where('domain', request()->getHost())->value('tenant_id');
+        $tenantId = Tenancy::id();
 
         return $schema->components([
             Section::make('Basic Info')
@@ -71,17 +69,14 @@ class BranchResource extends Resource
                     ->required()
                     ->searchable()
                     ->preload()
-                    ->options(fn () =>
+                    ->options(fn() =>
                         School::query()
-                            ->where('tenant_id', $tenantId)   // فلترة ثابتة
+                            ->where('tenant_id', $tenantId)
                             ->orderBy('name')
-                            ->pluck('name', 'id')
-                            ->toArray()
+                            ->pluck('name','id')->toArray()
                     )
-                    ->rule(
-                        Rule::exists('schools', 'id')
-                            ->where(fn ($q) => $q->where('tenant_id', $tenantId))
-                    ),
+                    ->rule(Rule::exists('schools','id')->where('tenant_id',$tenantId))
+
                 ])
                 ->columns(2),
         ]);

@@ -14,13 +14,14 @@ return new class extends Migration {
 
             $table->uuid('tenant_id')->index();
             $table->foreign('tenant_id', 'fk_classrooms_tenant')
-                  ->references('id')->on('tenants')
-                  ->cascadeOnDelete();
+                ->references('id')->on('tenants')
+                ->cascadeOnDelete();
 
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
 
             $table->string('name');
             $table->string('grade')->nullable();
+            $table->unsignedInteger('capacity')->default(30);
             $table->string('section')->nullable();
             $table->timestamps();
 
@@ -28,6 +29,6 @@ return new class extends Migration {
         });
     }
     public function down(): void {
-        Schema::dropIfExists('class_rooms');
+        Schema::dropIfExists('classrooms');
     }
 };
