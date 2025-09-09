@@ -10,7 +10,7 @@ use Filament\Widgets\ChartWidget;
 
 class SubjectsByBranchChart extends ChartWidget
 {
-protected static ?string $heading = 'Subjects by Branch';
+    protected ?string $heading = 'Subjects by Branch';
 
 
 protected function getData(): array

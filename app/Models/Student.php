@@ -21,10 +21,18 @@ class Student extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function classRooms()
+    {
+        return $this->belongsToMany(\App\Models\ClassRoom::class, 'class_room_student')
+            ->using(\App\Models\Pivots\ClassRoomStudent::class) // ✅ هنا
+            ->withPivot(['tenant_id'])
+            ->withTimestamps();
+    }
+
     public function branch()
-       {
+    {
         return $this->belongsTo(Branch::class, 'branch_id');
-       }
+    }
     public function guardian()
     {
         return $this->belongsTo(Guardian::class , 'guardian_id');
@@ -32,5 +40,10 @@ class Student extends Model
     public function school()
     {
         return $this->belongsTo(School::class, 'school_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
     }
 }

@@ -10,10 +10,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1) Create or get tenant in central DB
-        $tenant = Tenant::firstOrCreate(
-            ['id' => '11111111-1111-1111-1111-111111111111'], // fixed UUID for dev
-            ['name' => 'First School Group']                  // ← أصلحنا الاسم هنا
-        );
+        $this->call(TenantSeeder::class);
+
 
         // 2) Seed roles for ALL tenants (or at least this one) with proper tenant_id
         //    RoleSeeder internally should loop tenants and set team id (شوف نسخة RoleSeeder تحت)
@@ -24,8 +22,10 @@ class DatabaseSeeder extends Seeder
         $this->call(TenantAdminSeeder::class);
 
         // 4) Tenant DB seeders (دي جوه tenant connection)
+        $tenant = Tenant::first();
         $tenant->run(function () {
             $this->call([
+                TenantSeeder::class,
                 SchoolSeeder::class,
                 BranchSeeder::class,
                 TeacherSeeder::class,

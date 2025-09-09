@@ -26,4 +26,11 @@ class Classroom extends Model
     {
          return $this->belongsTo(\App\Models\Teacher::class, 'teacher_id');
     }
+    public function students()
+    {
+        return $this->belongsToMany(\App\Models\Student::class, 'class_room_student')
+            ->using(\App\Models\Pivots\ClassRoomStudent::class) // ✅ هنا
+            ->withPivot(['tenant_id'])
+            ->withTimestamps();
+    }
 }

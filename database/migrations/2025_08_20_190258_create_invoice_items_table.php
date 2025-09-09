@@ -11,13 +11,13 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
-
             $table->uuid('tenant_id')->index();
             $table->foreign('tenant_id', 'fk_inv_items_tenant')
                   ->references('id')->on('tenants')
                   ->cascadeOnDelete();
 
             $table->foreignId('invoice_id')->constrained('invoices')->cascadeOnDelete();
+            $table->foreignId('fee_item_id')->constrained('fee_items')->cascadeOnDelete();
 
             $table->string('item');
             $table->unsignedInteger('qty')->default(1);

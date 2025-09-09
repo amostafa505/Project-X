@@ -32,6 +32,7 @@ class InvoiceSeeder extends Seeder
         InvoiceItem::create([
             'tenant_id'   => tenant()->id,
             'invoice_id'  => $invoice->id,
+            'fee_item_id' => $feeItem->id,
             'qty'         => 1,
             'item'        => $feeItem->name,
             'unit_price'  => $feeItem->default_amount,

@@ -8,6 +8,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RelationRepeater;
 
 class StudentForm
 {
@@ -37,6 +38,27 @@ class StudentForm
                     ->searchable()
                     ->preload()
                     ->nullable(),
+                // RelationRepeater::make('guardians')
+                // ->label('Guardians')
+                // ->relationship('guardians') // ← اسم العلاقة في Student model
+                // ->schema([
+                //     // لو guardians موجودين مسبقًا وتربطهم فقط:
+                //     Select::make('id')
+                //         ->label('Guardian')
+                //         ->relationship('guardians', 'name') // يملأ القائمة من جدول guardians
+                //         ->searchable()->preload()
+                //         ->required()
+                //         ->columnSpanFull(),
+                //     // بديل: لو عايز إنشاء Guardian جديد inline (لو العلاقة hasMany بدل many-to-many)
+                //     // TextInput::make('name')->required(),
+                //     // TextInput::make('phone')->tel(),
+                //     // TextInput::make('relation')->maxLength(50),
+                // ])
+                // ->addActionLabel('Add Guardian')
+                // ->grid(1)
+                // ->orderable(false),
+
+
                 TextInput::make('first_name')
                     ->label('First name')
                     ->required()

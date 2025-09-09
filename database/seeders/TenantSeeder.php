@@ -11,13 +11,14 @@ class TenantSeeder extends Seeder
     {
         // Create a deterministic tenant id (optional)
         $tenant = Tenant::firstOrCreate(
-            ['id' => '11111111-1111-1111-1111-111111111111'],
+            ['id' => '11111111-1111-1111-1111-111111111111',
+                'name' => 'Central'],
             [] // any initial data bag if you use it
         );
 
         // Attach domain (central DB table)
         $tenant->domains()->firstOrCreate([
-            'domain' => 'school1.project-x.test',
+            'domain' => 'project-x.test',
         ]);
     }
 }

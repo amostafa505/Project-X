@@ -9,6 +9,7 @@ class Tenant extends BaseTenant
 {
     use HasDomains;
 
+    protected $fillable = ['name'];
     // Optional: place for casts or helper accessors later
     // protected $casts = [ ... ];
 }

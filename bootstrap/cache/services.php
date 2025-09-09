@@ -48,8 +48,9 @@
     44 => 'Spatie\\Permission\\PermissionServiceProvider',
     45 => 'Stancl\\Tenancy\\TenancyServiceProvider',
     46 => 'App\\Providers\\AppServiceProvider',
-    47 => 'App\\Providers\\Filament\\CentralPanelPanelProvider',
-    48 => 'App\\Providers\\Filament\\TenantPanelProvider',
+    47 => 'App\\Providers\\AuthServiceProvider',
+    48 => 'App\\Providers\\Filament\\CentralPanelPanelProvider',
+    49 => 'App\\Providers\\Filament\\TenantPanelProvider',
   ),
   'eager' => 
   array (
@@ -84,8 +85,9 @@
     28 => 'Spatie\\Permission\\PermissionServiceProvider',
     29 => 'Stancl\\Tenancy\\TenancyServiceProvider',
     30 => 'App\\Providers\\AppServiceProvider',
-    31 => 'App\\Providers\\Filament\\CentralPanelPanelProvider',
-    32 => 'App\\Providers\\Filament\\TenantPanelProvider',
+    31 => 'App\\Providers\\AuthServiceProvider',
+    32 => 'App\\Providers\\Filament\\CentralPanelPanelProvider',
+    33 => 'App\\Providers\\Filament\\TenantPanelProvider',
   ),
   'deferred' => 
   array (
