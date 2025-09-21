@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Branch;
+use App\Models\Tenant;
 use App\Models\FeeItem;
 use App\Models\Invoice;
 use App\Models\Student;
@@ -16,9 +17,10 @@ class InvoiceSeeder extends Seeder
         $student = Student::first();
         $feeItem = FeeItem::first();
         $branch   = Branch::first();
+        $tenants = Tenant::first();
 
         $invoice = Invoice::create([
-            'tenant_id'  => tenant()->id,
+            'tenant_id'  => $tenants->id,
             'student_id' => $student->id,
             'branch_id'  => $branch->id,
             'number'     => 'INV-001',
@@ -30,13 +32,13 @@ class InvoiceSeeder extends Seeder
         ]);
 
         InvoiceItem::create([
-            'tenant_id'   => tenant()->id,
+            'tenant_id'   => $tenants->id,
             'invoice_id'  => $invoice->id,
             'fee_item_id' => $feeItem->id,
             'qty'         => 1,
             'item'        => $feeItem->name,
             'unit_price'  => $feeItem->default_amount,
-            'line_total'       => $feeItem->default_amount,
+            'line_total'  => $feeItem->default_amount,
         ]);
     }
 }

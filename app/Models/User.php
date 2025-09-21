@@ -10,8 +10,8 @@ class User extends Authenticatable
 {
     use Notifiable, HasRoles;
 
-    protected $fillable = ['name','email','password'];
-    protected $hidden   = ['password','remember_token'];
+    protected $fillable = ['name', 'email', 'password'];
+    protected $hidden   = ['password', 'remember_token'];
 
     // Memberships for tenants
     public function memberships()
@@ -23,5 +23,14 @@ class User extends Authenticatable
     public function currentMembership(): ?TenantUser
     {
         return tenant() ? $this->memberships()->where('tenant_id', tenant()->id)->first() : null;
+    }
+    public function ownedTenants()
+    {
+        return $this->hasMany(Tenant::class, 'owner_user_id');
+    }
+
+    public function ownedOrganizations()
+    {
+        return $this->hasMany(Organization::class, 'owner_user_id');
     }
 }

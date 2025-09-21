@@ -9,19 +9,39 @@ use App\Http\Middleware\SetSpatieTeamFromTenant;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: [
+            base_path('routes/web.php'),      // لو مش بتستعمله سيبه فاضي
+            base_path('routes/central.php'),  // راوتس السنترال (بدون تننسي)
+            base_path('routes/tenant.php'),   // راوتس التينانت (بميدل وير الستانسل)
+        ],
+        commands: base_path('routes/console.php'),
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
+    ->withMiddleware(function ($middleware) {
         $middleware->alias([
             // stancl tenancy
             'tenancy.init'   => InitializeTenancyByDomain::class,
-            'tenancy.prevent'=> PreventAccessFromCentralDomains::class,
+            'tenancy.prevent' => PreventAccessFromCentralDomains::class,
             // spatie teams sync
             'spatie.team'    => SetSpatieTeamFromTenant::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function ($exceptions) {
         //
     })->create();
+    //     web: __DIR__.'/../routes/web.php',
+    //     commands: __DIR__.'/../routes/console.php',
+    //     health: '/up',
+    // )
+    // ->withMiddleware(function (Middleware $middleware): void {
+    //     $middleware->alias([
+    //         // stancl tenancy
+    //         'tenancy.init'   => InitializeTenancyByDomain::class,
+    //         'tenancy.prevent'=> PreventAccessFromCentralDomains::class,
+    //         // spatie teams sync
+    //         'spatie.team'    => SetSpatieTeamFromTenant::class,
+    //     ]);
+    // })
+    // ->withExceptions(function (Exceptions $exceptions): void {
+    //     //
+    // })->create();

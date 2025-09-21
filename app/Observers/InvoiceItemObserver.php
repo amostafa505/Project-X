@@ -11,7 +11,7 @@ class InvoiceItemObserver
      */
     public function created(InvoiceItem $invoiceItem): void
     {
-        $invoiceItem->total = ($invoiceItem->qty ?? 1) * ($invoiceItem->unit_price ?? 0);
+        $invoiceItem->line_total = ($invoiceItem->qty ?? 1) * ($invoiceItem->unit_price ?? 0);
     }
 
     /**
@@ -19,8 +19,7 @@ class InvoiceItemObserver
      */
     public function updated(InvoiceItem $invoiceItem): void
     {
-        $invoiceItem->total = ($invoiceItem->qty ?? 1) * ($invoiceItem->unit_price ?? 0);
-
+        $invoiceItem->line_total = ($invoiceItem->qty ?? 1) * ($invoiceItem->unit_price ?? 0);
     }
 
     public function saved(InvoiceItem $invoiceItem): void
@@ -55,16 +54,16 @@ class InvoiceItemObserver
     protected function recalcInvoice(InvoiceItem $item): void
     {
         // اعمل refresh لعلاقة الفاتورة لو مش محمّلة
-        if (! $item->relationLoaded('invoice')) {
+        if (!$item->relationLoaded('invoice')) {
             $item->load('invoice');
         }
 
         $invoice = $item->invoice;
-        if (! $invoice) {
+        if (!$invoice) {
             return;
         }
 
-        $sum = $invoice->items()->sum('total'); // غيّر items لو علاقتك اسمها مختلف
-        $invoice->forceFill(['total' => $sum])->saveQuietly();
+        $sum = $invoice->items()->sum('line_total'); // غيّر items لو علاقتك اسمها مختلف
+        $invoice->forceFill(['amount' => $sum])->saveQuietly();
     }
 }

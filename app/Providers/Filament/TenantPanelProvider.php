@@ -4,9 +4,11 @@ namespace App\Providers\Filament;
 
 use Filament\Panel;
 use Filament\PanelProvider;
+use App\Filament\Tenant\Widgets\RecentInvoices;
 use App\Filament\Tenant\Widgets\FinanceOverview;
 use App\Http\Middleware\SetSpatieTeamFromTenant;
 use App\Http\Middleware\EnsureUserBelongsToTenant;
+use App\Filament\Tenant\Widgets\RevenueThisMonthChart;
 use App\Filament\Tenant\Widgets\SubjectsByBranchChart;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use App\Filament\Tenant\Pages\Stats; // ← الصفحة اللي أنشأناها
@@ -33,6 +35,8 @@ class TenantPanelProvider extends PanelProvider
         ->widgets([
             FinanceOverview::class,
             SubjectsByBranchChart::class,
+            RevenueThisMonthChart::class,
+            RecentInvoices::class,
         ]);
 
     }

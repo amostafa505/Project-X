@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use App\Policies\InvoicePolicy;
 use App\Observers\InvoiceObserver;
+use App\Policies\InvoiceItemPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Observers\InvoiceItemObserver;
 use Illuminate\Support\ServiceProvider;

@@ -14,33 +14,28 @@ class TenantAdminSeeder extends Seeder
     public function run(): void
     {
         $tenants = Tenant::all();
+        $user = User::first();
+        if (!$user) return;
 
         foreach ($tenants as $tenant) {
-            // فعّل التينانت
+            // فعّل سياق التينانت + الفريق (Spatie Teams)
             tenancy()->initialize($tenant);
             app(PermissionRegistrar::class)->setPermissionsTeamId($tenant->id);
 
-            // جيب أول يوزر مركزي (ممكن تعدله لإيميل محدد)
-            $user = User::first();
-            if (! $user) continue;
-
-            // اربط المستخدم بالتينانت لو مش موجود
+            // اربط المستخدم بالتينانت
             TenantUser::firstOrCreate(
-                [
-                    'tenant_id' => $tenant->id,
-                    'user_id'   => $user->id,
-                ],
-                [
-                    'status' => 'active',
-                    'locale' => 'en',
-                ]
+                ['tenant_id' => $tenant->id, 'user_id' => $user->id],
+                ['status' => 'active', 'locale' => 'en']
             );
 
-            // أنشئ رول admin في التينانت لو مش موجود
-            $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+            // أنشئ/ثبت دور admin داخل هذا التينانت بالتحديد
+            $adminRole = Role::firstOrCreate(
+                ['name' => 'admin', 'guard_name' => 'web', 'tenant_id' => $tenant->id],
+                []
+            );
 
-            // اسند الرول للمستخدم داخل التينانت الحالي
-            if (! $user->hasRole('admin')) {
+            // اسناد الدور داخل نفس التينانت (يعتمد على teamId الحالي)
+            if (!$user->hasRole('admin')) {
                 $user->assignRole('admin');
             }
         }

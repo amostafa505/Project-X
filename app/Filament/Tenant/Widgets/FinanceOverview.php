@@ -9,13 +9,14 @@ use Illuminate\Support\Carbon;
 
 class FinanceOverview extends BaseWidget
 {
-    // في إصدارك: $heading شغّالة non-static (سيبها كده طالما مفيش خطأ عليها)
     protected ?string $heading = 'Finance (This Month)';
 
-    // ❌ كانت non-static
-    // protected ?int $sort = 1;
-    // ✅ خليه STATIC ليتوافق مع Widget::$sort
     protected static ?int $sort = 1;
+
+    public static function canView(): bool
+    {
+        return auth()->user()?->can('invoices.view') ?? false;
+    }
 
     protected function getStats(): array
     {
@@ -25,17 +26,17 @@ class FinanceOverview extends BaseWidget
 
         $base = Invoice::query()->where('tenant_id', $tenantId);
 
-        $paid = (clone $base)->whereBetween('issue_date', [$start, $end])
+        $paid = (clone $base)->whereBetween('created_at', [$start, $end])
             ->where('status', 'paid')
-            ->sum('total');
+            ->sum('amount');
 
-        $due = (clone $base)->whereBetween('issue_date', [$start, $end])
+        $due = (clone $base)->whereBetween('created_at', [$start, $end])
             ->whereIn('status', ['pending', 'unpaid'])
-            ->sum('total');
+            ->sum('amount');
 
         $overdue = (clone $base)->where('due_date', '<', Carbon::today())
             ->whereIn('status', ['pending', 'unpaid'])
-            ->sum('total');
+            ->sum('amount');
 
         return [
             Stat::make('Paid (This Month)', number_format((float) $paid, 2) . ' EGP'),

@@ -33,7 +33,8 @@ class InvoiceItemsRelationManager extends RelationManager
                 ->default(1)
                 ->required()
                 ->reactive()
-                ->afterStateUpdated(fn ($state, $set, $get) =>
+                ->afterStateUpdated(
+                    fn ($state, $set, $get) =>
                     $set('total', (float) $state * (float) $get('unit_price'))
                 ),
 
@@ -43,12 +44,13 @@ class InvoiceItemsRelationManager extends RelationManager
                 ->minValue(0)
                 ->required()
                 ->reactive()
-                ->afterStateUpdated(fn ($state, $set, $get) =>
+                ->afterStateUpdated(
+                    fn ($state, $set, $get) =>
                     $set('total', (float) $get('qty') * (float) $state)
                 ),
 
             // النهائي بيتحسب في الـ Observer — نعرضه فقط
-            Forms\Components\TextInput::make('total')
+            Forms\Components\TextInput::make('amount')
                 ->numeric()
                 ->prefix('EGP')
                 ->disabled()
@@ -63,7 +65,7 @@ class InvoiceItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('feeItem.name')->label('Fee')->searchable(),
                 Tables\Columns\TextColumn::make('qty'),
                 Tables\Columns\TextColumn::make('unit_price')->money('egp', true),
-                Tables\Columns\TextColumn::make('total')->money('egp', true),
+                Tables\Columns\TextColumn::make('amount')->money('egp', true),
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),

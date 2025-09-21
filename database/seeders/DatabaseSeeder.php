@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
         $tenant = Tenant::first();
         $tenant->run(function () {
             $this->call([
-                TenantSeeder::class,
                 SchoolSeeder::class,
                 BranchSeeder::class,
                 TeacherSeeder::class,

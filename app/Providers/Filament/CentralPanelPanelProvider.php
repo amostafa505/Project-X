@@ -1,11 +1,15 @@
 <?php
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\EnsureCentralAccess;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Http\Middleware\Authenticate as FilamentAuthenticate;
 use Filament\Pages\Dashboard;
+use App\Http\Middleware\EnsureCentralAccess;
+use App\Filament\Tenant\Widgets\RecentInvoices;
+use App\Filament\Tenant\Widgets\FinanceOverview;
+use App\Filament\Tenant\Widgets\RevenueThisMonthChart;
+use App\Filament\Tenant\Widgets\SubjectsByBranchChart;
+use Filament\Http\Middleware\Authenticate as FilamentAuthenticate;
 
 class CentralPanelPanelProvider extends PanelProvider
 {
@@ -23,6 +27,12 @@ class CentralPanelPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Central/Resources'), for: 'App\\Filament\\Central\\Resources')
             ->discoverPages(in: app_path('Filament/Central/Pages'), for: 'App\\Filament\\Central\\Pages')
             ->pages([ Dashboard::class ])
-            ->homeUrl(fn () => Dashboard::getUrl());
+            ->homeUrl(fn () => Dashboard::getUrl())
+            ->widgets([
+                FinanceOverview::class,
+                SubjectsByBranchChart::class,
+                RevenueThisMonthChart::class,
+                RecentInvoices::class,
+            ]);
     }
 }

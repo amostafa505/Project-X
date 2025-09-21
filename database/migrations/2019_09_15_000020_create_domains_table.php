@@ -16,12 +16,17 @@ class CreateDomainsTable extends Migration
     public function up(): void
     {
         Schema::create('domains', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
+            // نخلي tenant_id UUID متوافق مع tenants.id (uuid)
+            $table->uuid('tenant_id')->index();
             $table->string('domain', 255)->unique();
-            $table->string('tenant_id');
-
+            $table->boolean('is_primary')->default(false)->index();
             $table->timestamps();
-            $table->foreign('tenant_id')->references('id')->on('tenants')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->foreign('tenant_id', 'fk_domains_tenant')
+                ->references('id')->on('tenants')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

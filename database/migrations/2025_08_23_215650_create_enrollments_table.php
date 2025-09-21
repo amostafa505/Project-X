@@ -6,37 +6,41 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        Schema::dropIfExists('enrollments');
+
         Schema::create('enrollments', function (Blueprint $table) {
             $table->id();
 
-            // stancl/tenancy uses string (UUID) IDs by default
+            // tenancy
             $table->uuid('tenant_id')->index();
             $table->foreign('tenant_id', 'fk_enrollments_tenant')
-                  ->references('id')->on('tenants')
-                  ->cascadeOnDelete();
+                ->references('id')->on('tenants')->cascadeOnDelete();
 
+            // optional branch scoping
+            $table->foreignId('branch_id')->nullable()->index()
+                ->constrained('branches')->nullOnDelete();
+
+            // relations
             $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
             $table->foreignId('classroom_id')->constrained('classrooms')->cascadeOnDelete();
 
+            // dates / status
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->string('status')->default('active'); // active | completed | withdrawn
+            $table->string('status')->default('active'); // active|completed|withdrawn|paused
 
             $table->timestamps();
 
-            // avoid duplicate active enrollment for same student & classroom
-            $table->unique(['tenant_id','student_id','classroom_id'], 'uq_enrollments_tenant_student_classroom');
+            // avoid duplicate active enrollments for same student-classroom-branch within tenant
+            $table->unique(
+                ['tenant_id', 'branch_id', 'student_id', 'classroom_id'],
+                'uq_enrollments_tenant_branch_student_class'
+            );
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('enrollments');

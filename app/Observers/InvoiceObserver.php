@@ -10,9 +10,9 @@ class InvoiceObserver
     public function saved(Invoice $invoice): void
     {
         // تأكيد توحيد القيمة بعد أي تعديل على الفاتورة
-        $sum = $invoice->items()->sum('total'); // غيّر items لو علاقتك اسمها مختلف
-        if ((float) $invoice->total !== (float) $sum) {
-            $invoice->forceFill(['total' => $sum])->saveQuietly();
+        $sum = $invoice->items()->sum('line_total'); // غيّر items لو علاقتك اسمها مختلف
+        if ((float) $invoice->amount !== (float) $sum) {
+            $invoice->forceFill(['amount' => $sum])->saveQuietly();
         }
     }
 
