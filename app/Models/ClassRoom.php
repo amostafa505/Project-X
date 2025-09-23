@@ -15,7 +15,7 @@ class Classroom extends Model
     protected $fillable = [
         'tenant_id', 'branch_id', 'teacher_id',
         'name', 'code', 'capacity', 'grade_level',
-        'status', 'notes',
+        'status', 'notes', 'section', 'grade'
     ];
 
     public function branch()
@@ -24,13 +24,12 @@ class Classroom extends Model
     }
     public function teacher()
     {
-         return $this->belongsTo(\App\Models\Teacher::class, 'teacher_id');
+        return $this->belongsTo(\App\Models\Teacher::class, 'teacher_id');
     }
     public function students()
     {
-        return $this->belongsToMany(\App\Models\Student::class, 'class_room_student')
-            ->using(\App\Models\Pivots\ClassRoomStudent::class) // ✅ هنا
-            ->withPivot(['tenant_id'])
+        return $this->belongsToMany(\App\Models\Student::class, 'enrollments', 'classroom_id', 'student_id')
+            ->withPivot(['tenant_id', 'start_date', 'end_date', 'status'])
             ->withTimestamps();
     }
 }

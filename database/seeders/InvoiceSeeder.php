@@ -2,37 +2,40 @@
 
 namespace Database\Seeders;
 
-use App\Models\Branch;
+use Illuminate\Database\Seeder;
 use App\Models\Tenant;
+use App\Models\Branch;
+use App\Models\Student;
 use App\Models\FeeItem;
 use App\Models\Invoice;
-use App\Models\Student;
 use App\Models\InvoiceItem;
-use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class InvoiceSeeder extends Seeder
 {
     public function run(): void
     {
-        $student = Student::first();
-        $feeItem = FeeItem::first();
+        $tenant   = tenant();
         $branch   = Branch::first();
-        $tenants = Tenant::first();
+        $student  = Student::first();
+        $feeItem  = FeeItem::first();
+
+        if (!$tenant || !$branch || !$student || !$feeItem) return;
 
         $invoice = Invoice::create([
-            'tenant_id'  => $tenants->id,
-            'student_id' => $student->id,
+            'tenant_id'  => $tenant->id,
             'branch_id'  => $branch->id,
-            'number'     => 'INV-001',
+            'student_id' => $student->id,
+            'number'     => 'INV-' . Str::upper(Str::random(6)),
+            'amount'     => $feeItem->default_amount,
+            'currency'   => $tenant->currency ?? 'EGP',
             'status'     => 'unpaid',
-            'amount'      => $feeItem->default_amount,
-            'currency'   => 'EGP',
-            // 'issued_at'  => now(),
-            'due_date'     => now()->addDays(30),
+            'issue_date' => now(),
+            'due_date'   => now()->addDays(30),
         ]);
 
         InvoiceItem::create([
-            'tenant_id'   => $tenants->id,
+            'tenant_id'   => $tenant->id,
             'invoice_id'  => $invoice->id,
             'fee_item_id' => $feeItem->id,
             'qty'         => 1,

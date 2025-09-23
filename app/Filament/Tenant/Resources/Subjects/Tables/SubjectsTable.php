@@ -14,9 +14,10 @@ class SubjectsTable
     {
         return $table
             ->columns([
-                TextColumn::make('tenant_id')
-                    ->searchable(),
-                TextColumn::make('branch_id')
+                // TextColumn::make('tenant_id')
+                //     ->searchable(),
+                TextColumn::make('branch.name')
+                    ->label('Branch')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('name')

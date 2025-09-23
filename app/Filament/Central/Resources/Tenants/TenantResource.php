@@ -12,16 +12,15 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
 
 class TenantResource extends Resource
 {
+    protected static ?string $model = Tenant::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
     protected static \UnitEnum|string|null  $navigationGroup = 'Multitenancy';
     protected static ?string $modelLabel = 'Tenant';
     protected static ?string $pluralModelLabel = 'Tenants';
-    protected static ?string $model = Tenant::class;
-
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
@@ -29,24 +28,17 @@ class TenantResource extends Resource
         return TenantForm::configure($schema);
     }
 
-    public static function table(Table $table): Table
+    public static function table(\Filament\Tables\Table $table): \Filament\Tables\Table
     {
         return TenantsTable::configure($table);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListTenants::route('/'),
+            'index'  => ListTenants::route('/'),
             'create' => CreateTenant::route('/create'),
-            'edit' => EditTenant::route('/{record}/edit'),
+            'edit'   => EditTenant::route('/{record}/edit'),
         ];
     }
 }

@@ -11,6 +11,9 @@ class TeacherSeeder extends Seeder
     public function run(): void
     {
         $branch = Branch::first();
-        Teacher::factory()->count(5)->create(['branch_id' => $branch->id]);
+        Teacher::factory()->count(5)->create([
+            'tenant_id' => tenant('id'),
+            'branch_id' => $branch->id,
+        ]);
     }
 }

@@ -12,15 +12,13 @@ class ClassroomSeeder extends Seeder
     public function run(): void
     {
         $branch = Branch::first();
+
         Classroom::factory()
-    ->count(2)
-    ->state(new Sequence(
-        ['name' => 'Class A'],
-        ['name' => 'Class B'],
-        // زوّد لو هتعمل أكتر من 2
-    ))
-    ->create([
-        'branch_id' => $branch->id,
-    ]);
+            ->count(2)
+            ->state(new Sequence(['name' => 'Class A'], ['name' => 'Class B']))
+            ->create([
+                'tenant_id' => tenant('id'),
+                'branch_id' => $branch->id,
+            ]);
     }
 }

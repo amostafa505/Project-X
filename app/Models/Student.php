@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
 {
-    use BelongsToTenant , HasFactory;
+    use BelongsToTenant, HasFactory;
 
     protected $fillable = [
-        'tenant_id','branch_id','school_id','first_name','last_name','status','guardian_id' , 'code' , 'dob', 'gender'
+        'tenant_id', 'branch_id', 'school_id', 'first_name', 'last_name', 'status', 'guardian_id', 'code', 'dob', 'gender'
     ];
 
     protected $casts = [
@@ -21,11 +21,10 @@ class Student extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function classRooms()
+    public function classrooms()
     {
-        return $this->belongsToMany(\App\Models\ClassRoom::class, 'class_room_student')
-            ->using(\App\Models\Pivots\ClassRoomStudent::class) // ✅ هنا
-            ->withPivot(['tenant_id'])
+        return $this->belongsToMany(\App\Models\Classroom::class, 'enrollments', 'student_id', 'classroom_id')
+            ->withPivot(['tenant_id', 'start_date', 'end_date', 'status'])
             ->withTimestamps();
     }
 
@@ -35,7 +34,7 @@ class Student extends Model
     }
     public function guardian()
     {
-        return $this->belongsTo(Guardian::class , 'guardian_id');
+        return $this->belongsTo(Guardian::class, 'guardian_id');
     }
     public function school()
     {

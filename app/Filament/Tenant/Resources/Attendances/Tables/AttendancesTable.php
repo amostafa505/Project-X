@@ -21,9 +21,9 @@ class AttendanceTable
                 TextColumn::make('note')->limit(30)->toggleable(),
                 TextColumn::make('created_at')->since(),
             ])
-            ->recordActions([ EditAction::make(), DeleteAction::make() ])
+            ->recordActions([EditAction::make(), DeleteAction::make()])
             ->toolbarActions([
-                BulkActionGroup::make([ DeleteBulkAction::make() ]),
+                BulkActionGroup::make([DeleteBulkAction::make()]),
             ]);
     }
 }

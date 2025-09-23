@@ -9,6 +9,8 @@ class SchoolSeeder extends Seeder
 {
     public function run(): void
     {
-        School::factory()->count(1)->create();
+        School::factory()->count(1)->create([
+            'tenant_id' => tenant('id'),
+        ]);
     }
 }

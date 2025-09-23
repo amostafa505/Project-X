@@ -14,12 +14,13 @@ class StudentSeeder extends Seeder
     {
         $branch   = Branch::first();
         $guardian = Guardian::first();
-        $school = School::first();
+        $school   = School::first();
 
         Student::factory()->count(10)->create([
+            'tenant_id'   => tenant('id'),
             'branch_id'   => $branch->id,
             'guardian_id' => $guardian->id,
-            'school_id' =>$school->id,
+            'school_id'   => $school->id,
         ]);
     }
 }

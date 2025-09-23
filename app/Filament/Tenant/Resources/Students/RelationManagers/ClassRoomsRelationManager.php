@@ -13,16 +13,16 @@ use Filament\Actions\DetachBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Resources\RelationManagers\RelationManager;
 
-class ClassRoomsRelationManager extends RelationManager
+class ClassroomsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'classRooms'; // مطابق لاسم العلاقة في Student
+    protected static string $relationship = 'classrooms'; // مطابق لاسم العلاقة في Student
 
     public function form(Schema $schema): Schema
     {
         // لو هتضيف فيوتشر pivot fields، حطها هنا.
         // للآن مش محتاجين غير tenant_id يتملّى تلقائيًا وقت الـ attach من الـ form.
         return $schema->components([
-            Hidden::make('tenant_id')->default(fn() => tenant('id')),
+            Hidden::make('tenant_id')->default(fn () => tenant('id')),
         ]);
     }
 
@@ -37,7 +37,7 @@ class ClassRoomsRelationManager extends RelationManager
                 AttachAction::make()
                     ->preloadRecordSelect()
                     ->form([
-                        Hidden::make('tenant_id')->default(fn() => tenant('id')),
+                        Hidden::make('tenant_id')->default(fn () => tenant('id')),
                     ]),
             ])
             ->actions([

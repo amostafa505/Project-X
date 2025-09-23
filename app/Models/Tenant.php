@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
+use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 
 class Tenant extends BaseTenant
 {
     use HasDomains;
+    use SoftDeletes;
     protected $fillable = [
         'id',
         'code',
@@ -81,5 +83,10 @@ class Tenant extends BaseTenant
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_user_id');
+    }
+
+    public function domains()
+    {
+        return $this->hasMany(\App\Models\Domain::class, 'tenant_id', 'id');
     }
 }

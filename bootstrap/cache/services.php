@@ -51,7 +51,7 @@
     47 => 'Stancl\\Tenancy\\TenancyServiceProvider',
     48 => 'App\\Providers\\AppServiceProvider',
     49 => 'App\\Providers\\AuthServiceProvider',
-    50 => 'App\\Providers\\Filament\\CentralPanelPanelProvider',
+    50 => 'App\\Providers\\Filament\\CentralPanelProvider',
     51 => 'App\\Providers\\Filament\\TenantPanelProvider',
   ),
   'eager' => 
@@ -90,7 +90,7 @@
     31 => 'Stancl\\Tenancy\\TenancyServiceProvider',
     32 => 'App\\Providers\\AppServiceProvider',
     33 => 'App\\Providers\\AuthServiceProvider',
-    34 => 'App\\Providers\\Filament\\CentralPanelPanelProvider',
+    34 => 'App\\Providers\\Filament\\CentralPanelProvider',
     35 => 'App\\Providers\\Filament\\TenantPanelProvider',
   ),
   'deferred' => 

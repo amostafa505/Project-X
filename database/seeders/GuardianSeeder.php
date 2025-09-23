@@ -9,6 +9,8 @@ class GuardianSeeder extends Seeder
 {
     public function run(): void
     {
-        Guardian::factory()->count(5)->create();
+        Guardian::factory()->count(5)->create([
+            'tenant_id' => tenant('id'),
+        ]);
     }
 }
