@@ -13,6 +13,8 @@ class Doctor extends Model
         'first_name', 'last_name', 'email', 'phone',
         'specialty', 'license_no', 'is_active'
     ];
+    public $translatable = ['specialty'];
+
 
     protected $casts = [
         'is_active' => 'boolean',

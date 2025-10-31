@@ -30,7 +30,6 @@ class InvoiceSeeder extends Seeder
             'amount'     => $feeItem->default_amount,
             'currency'   => $tenant->currency ?? 'EGP',
             'status'     => 'unpaid',
-            'issue_date' => now(),
             'due_date'   => now()->addDays(30),
         ]);
 

@@ -90,17 +90,17 @@ return new class extends Migration
             $table->unsignedBigInteger($columnNames['model_morph_key']);
 
             // IMPORTANT: tenant scope
-            $table->uuid('tenant_id');
+            $table->uuid('tenant_id')->nullable()->index('idx_mhr_tenant');
 
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'idx_mhr_model');
-            $table->index(['tenant_id'], 'idx_mhr_tenant');
+            // $table->index(['tenant_id'], 'idx_mhr_tenant');
 
             $table->foreign('role_id')
                 ->references('id')->on($tableNames['roles'])
                 ->onDelete('cascade');
 
             // Composite PK including tenant_id
-            $table->primary(['role_id', $columnNames['model_morph_key'], 'model_type', 'tenant_id'], 'pk_model_has_roles');
+            $table->primary(['role_id', $columnNames['model_morph_key'], 'model_type'], 'pk_model_has_roles');
         });
 
         // Cache cleanup key (same as spatie)

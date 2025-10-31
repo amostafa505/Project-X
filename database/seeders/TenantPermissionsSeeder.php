@@ -24,7 +24,7 @@ class TenantPermissionsSeeder extends Seeder
             'invoice_items.view', 'invoice_items.create', 'invoice_items.update',
             'payments.view', 'payments.create',
             'branches.view', 'branches.create', 'branches.update',
-            'branches.viewAll', // مهم لو هتدي لمدير يشوف كل الفروع
+            'branches.viewAll', 'schools.view', 'schools.create', 'schools.update', // مهم لو هتدي لمدير يشوف كل الفروع
         ];
 
         foreach ($perms as $p) {
@@ -33,7 +33,16 @@ class TenantPermissionsSeeder extends Seeder
 
         $roles = [
             'Admin'      => $perms,
-            'Accountant' => ['invoices.*', 'invoice_items.*', 'payments.*'],
+            'Accountant' => [
+                'invoices.view',
+                'invoices.create',
+                'invoices.update',
+                'invoice_items.view',
+                'invoice_items.create',
+                'invoice_items.update',
+                'payments.view',
+                'payments.create',
+            ],
             'Viewer'     => ['students.view', 'teachers.view', 'classrooms.view', 'subjects.view', 'invoices.view'],
         ];
 

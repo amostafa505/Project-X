@@ -3,10 +3,13 @@
 namespace App\Models\Hospital;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Patient extends Model
 {
+    use HasTranslations;
     protected $table = 'patients';
+
 
     protected $fillable = [
         'tenant_id', 'branch_id', 'organization_id',
@@ -17,6 +20,8 @@ class Patient extends Model
     protected $casts = [
         'dob' => 'date',
     ];
+
+    public $translatable = ['address'];
 
     public function getFullNameAttribute(): string
     {

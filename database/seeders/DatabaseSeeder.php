@@ -12,8 +12,8 @@ class DatabaseSeeder extends Seeder
         // مركزي
         $this->call([
             TenantSeeder::class,
-            CentralUserSeeder::class,
             RoleSeeder::class,             // ينشئ أدوار عامة/مركزية أو يضبط teamId حسب الحاجة
+            CentralUserSeeder::class,
             TenantAdminSeeder::class,      // يربط Admin لكل Tenant
         ]);
 

@@ -14,10 +14,10 @@ class TenantSeeder extends Seeder
         $org = Organization::firstOrCreate(['name' => 'Central Org']);
 
         $tenant = Tenant::firstOrCreate(
-            ['code' => 'TNT-001'],
+            ['code' => 'CNT-001'],
             [
-                'id'         => (string) Str::uuid(),
-                'name'       => 'tenant1',
+                'id'         => '00000000-0000-0000-0000-000000000000',
+                'name'       => 'Central',
                 'type'       => 'school',
                 'organization_id' => $org->id,
                 'plan'       => 'free',
@@ -32,7 +32,7 @@ class TenantSeeder extends Seeder
 
         // دومين أساسي
         $tenant->domains()->updateOrCreate(
-            ['domain' => 'tenant1.project-x.test'],
+            ['domain' => 'project-x.test'],
             ['is_primary' => true],
         );
     }

@@ -10,28 +10,33 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
+            // Multi-tenant scope
             $table->uuid('tenant_id')->index();
             $table->uuid('branch_id')->nullable()->index();
             $table->unsignedBigInteger('organization_id')->nullable()->index();
 
-            $table->string('mrn');
+            // Identity
+            $table->string('mrn')->unique(); // Medical Record Number
             $table->string('first_name');
             $table->string('last_name')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
-            $table->date('dob')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
-            $table->string('address')->nullable();
+
+            // Demographics
+            $table->enum('gender', ['male', 'female', 'other'])->nullable()->index();
+            $table->date('dob')->nullable()->index();
+
+            // Contacts
+            $table->string('phone')->nullable()->index();
+            $table->string('email')->nullable()->index();
+
+            // Translatable address (optional, but prepared for i18n)
+            $table->json('address')->nullable(); // {"en":"...","ar":"..."}
+
+            // Clinical basics
             $table->string('blood_group')->nullable();
             $table->text('allergies')->nullable();
             $table->text('chronic_conditions')->nullable();
 
             $table->timestamps();
-
-            // Uniqueness should be per-tenant
-            $table->unique(['tenant_id', 'mrn'], 'patients_tenant_mrn_unique');
-            $table->unique(['tenant_id', 'phone'], 'patients_tenant_phone_unique');
-            $table->unique(['tenant_id', 'email'], 'patients_tenant_email_unique');
         });
     }
 

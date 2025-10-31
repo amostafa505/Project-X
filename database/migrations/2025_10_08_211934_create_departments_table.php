@@ -10,16 +10,22 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
+            // Multi-tenant scope
             $table->uuid('tenant_id')->index();
             $table->uuid('branch_id')->nullable()->index();
             $table->unsignedBigInteger('organization_id')->nullable()->index();
 
-            $table->json('name');                // translatable
+            // Translatable fields
+            $table->json('name');                // {"en": "...", "ar": "..."}
             $table->json('description')->nullable();
-            $table->string('code')->nullable();
+
+            // Meta
+            $table->string('code')->nullable()->index();
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
+
+            // (Optional) you can add foreign keys for org/branch if you have those tables centrally
         });
     }
 

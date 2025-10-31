@@ -28,5 +28,10 @@ class CentralPanelProvider extends PanelProvider
             ->widgets([
                 // Central-only widgets فقط
             ]);
+        //the next lines for enable logger on booting to central panel
+        // ->bootUsing(function () {
+        //     logger()->info('central panel booted on domain: ' . request()->getHost());
+        // })
+
     }
 }
