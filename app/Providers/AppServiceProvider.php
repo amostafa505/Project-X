@@ -31,15 +31,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-          /** @var Kernel $kernel */
-          $kernel = app()->make(Kernel::class);
+        /** @var Kernel $kernel */
+        $kernel = app()->make(Kernel::class);
 
-          $kernel->addToMiddlewarePriorityBefore(
-              SetSpatieTeamFromTenant::class,
-              SubstituteBindings::class,
-              EnsureUserBelongsToTenant::class,
-              EnsureCentralAccess::class,
-          );
+        $kernel->addToMiddlewarePriorityBefore(
+            SetSpatieTeamFromTenant::class,
+            SubstituteBindings::class,
+            EnsureUserBelongsToTenant::class,
+            EnsureCentralAccess::class,
+        );
 
         Invoice::observe(InvoiceObserver::class);
         InvoiceItem::observe(InvoiceItemObserver::class);

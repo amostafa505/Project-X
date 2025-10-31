@@ -24,24 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenancy.prevent' => PreventAccessFromCentralDomains::class,
             // spatie teams sync
             'spatie.team'    => SetSpatieTeamFromTenant::class,
+            'setlocale' => SetLocale::class,
         ]);
     })
     ->withExceptions(function ($exceptions) {
         //
     })->create();
-    //     web: __DIR__.'/../routes/web.php',
-    //     commands: __DIR__.'/../routes/console.php',
-    //     health: '/up',
-    // )
-    // ->withMiddleware(function (Middleware $middleware): void {
-    //     $middleware->alias([
-    //         // stancl tenancy
-    //         'tenancy.init'   => InitializeTenancyByDomain::class,
-    //         'tenancy.prevent'=> PreventAccessFromCentralDomains::class,
-    //         // spatie teams sync
-    //         'spatie.team'    => SetSpatieTeamFromTenant::class,
-    //     ]);
-    // })
-    // ->withExceptions(function (Exceptions $exceptions): void {
-    //     //
-    // })->create();

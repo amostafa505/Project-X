@@ -8,6 +8,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use App\Http\Middleware\EnsureUserBelongsToTenant;
 use App\Http\Middleware\SetSpatieTeamFromTenant;
+use App\Http\Middleware\SetLocale;
 use App\Filament\Tenant\Pages\Stats;
 use App\Filament\Tenant\Widgets\{
     FinanceOverview,
@@ -18,6 +19,8 @@ use App\Filament\Tenant\Widgets\{
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Illuminate\Support\HtmlString;
+
 
 class TenantPanelProvider extends PanelProvider
 {
@@ -29,12 +32,15 @@ class TenantPanelProvider extends PanelProvider
             ->path('app')
             ->brandName('Project-X')
             ->login()
+            ->renderHook('panels::topbar.end', fn () => view('components.tenant.language-switcher'))
+
             // مهم: فعّل التينانسي أولاً ثم web
             ->middleware([
                 InitializeTenancyByDomain::class,
                 PreventAccessFromCentralDomains::class,
                 'web',
                 SetSpatieTeamFromTenant::class, // بيضبط TeamId للحزمة
+                SetLocale::class,
             ])
             ->authMiddleware([
                 FilamentAuthenticate::class,
@@ -91,6 +97,15 @@ class TenantPanelProvider extends PanelProvider
                         // نفّذ سكوب/تصفية داخل الموارد نفسها
                     }
 
+                    // Filament::registerRenderHook(
+                    //     'panels::global-search.before',
+                    //     fn () => '
+                    //         <div class="flex items-center gap-2 rtl:flex-row-reverse">
+                    //             <a href="' . route('set-locale', ['locale' => 'en']) . '" class="text-sm text-gray-600 hover:text-primary-600">EN</a>
+                    //             <a href="' . route('set-locale', ['locale' => 'ar']) . '" class="text-sm text-gray-600 hover:text-primary-600">AR</a>
+                    //         </div>
+                    //     '
+                    // );
                     // (اختياري) للتشخيص:
                     logger()->info('tenant in serving: ' . (tenant()?->id ?? 'null'));
                 });

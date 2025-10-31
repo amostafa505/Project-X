@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('code')->unique();           // مختصر فريد: ex. ANDA-SCH-001
             $table->string('name');                     // الاسم التجاري/الوصف
 
+            $table->string('default_locale')->default('en');
+
             // Multi-vertical support
             $table->string('type')->default('school');  // school | clinic | pharmacy | ...
 

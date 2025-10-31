@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 /**
  * TENANT routes (domain or subdomain based)
@@ -37,7 +37,14 @@ Route::middleware(['tenancy.init', 'tenancy.prevent', 'spatie.team'])
         // Route::resource('users', UsersController::class)->except(['show']);
 
         // example tenant-only ping
-        Route::get('/ping', fn () => 'pong (tenant='.tenant()->id.')');
+        Route::get('/ping', fn () => 'pong (tenant=' . tenant()->id . ')');
     });
-    Route::get('/whoami', fn () => response()->json(['tenant' => tenant()?->id]))
+Route::get('/whoami', fn () => response()->json(['tenant' => tenant()?->id]))
     ->middleware(['web', \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class]);
+
+Route::get('/locale/{locale}', function (string $locale) {
+    if (in_array($locale, ['en', 'ar'], true)) {
+        setUserLocale($locale);
+    }
+    return back();
+})->name('set-locale')->middleware(['web']);
